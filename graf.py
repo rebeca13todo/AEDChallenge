@@ -1,9 +1,6 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 from typing import TypeAlias
-import random
 from distancia import distancia
-import participant as p
 from participant import load_participants, Participant
 
 data_path = "data/datathon_participants.json"
@@ -21,10 +18,10 @@ def arestes_nodes(g: PersonesGraph, particip: list[Participant]):
     """
 
     for person1 in particip:
-        G.add_node(person1)
+        g.add_node(person1)
 
         for person2 in particip:
             if person1 != person2:
-                G.add_edge(person1, person2, distancia(person1, person2))
+                g.add_edge(person1, person2, weight = distancia(person1, person2))
 
-    
+    return g
