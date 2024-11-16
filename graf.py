@@ -26,7 +26,7 @@ def arestes_nodes(g: PersonesGraph, particip: list[Participant]):
 
     return g
 
-def equips_creats(g: PersonesGraph) -> list[list[str]]:
+def equips_creats(g: PersonesGraph) -> list[list[Participant]]:
     """
     Funció que crea els equips.
     """
@@ -71,8 +71,10 @@ def result(g: PersonesGraph, particip: list[Participant]) -> list[list[str]]:
 
     graf = arestes_nodes(g, particip)
 
-    equips_m = equips_creats(graf)
+    equips_m: list[list[Participant]] = equips_creats(graf)
 
-    return equips_m
+    equips_m_noms: list[list[str]] = [[equips_m[i][j].name for j in range(len(equips_m[0]))] for i in range(len(equips_m))]
+
+    return equips_m_noms
 
 print(result(G, participants))
