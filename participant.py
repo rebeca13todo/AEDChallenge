@@ -42,6 +42,10 @@ class Participant:
     fun_fact: str
 
 
+
+
+
+
 def load_participants(path: str) -> List[Participant]:
     if not pathlib.Path(path).exists():
         raise FileNotFoundError(

@@ -7,3 +7,5 @@ participants = load_participants(data_path)
 
 print(participants[2])
 #hola
+
+#knn
