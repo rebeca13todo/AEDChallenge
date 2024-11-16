@@ -1,6 +1,7 @@
 
 import participant as p
 
-path:str = "..."
+path:str = "data/datathon_participants.json"
 participants = p.load_participants(path)
 
+print(participants)
