@@ -25,3 +25,54 @@ def arestes_nodes(g: PersonesGraph, particip: list[Participant]):
                 g.add_edge(person1, person2, weight = distancia(person1, person2))
 
     return g
+
+def equips_creats(g: PersonesGraph) -> list[list[str]]:
+    """
+    Funció que crea els equips.
+    """
+    tam: int = 4
+    equips = []
+    n_assignats = set()
+
+    sort_arestes = sorted(g.edges(data=True), key=lambda x: x[2]['weight'])
+
+
+    for u, v, data in sort_arestes:
+        if u not in n_assignats and v not in n_assignats:
+            equip = [u, v]
+            n_assignats.update(equip)
+
+            candidats = [n for n in g.nodes if n not in n_assignats]
+            while len(equip) < tam and candidats:
+                millor_candidat = None
+                millor_distancia = float('inf')
+
+                for c in candidats:
+                    dist_act = sum(g[c][e]['weight'] for e in equip) / len(equip)
+                    if dist_act < millor_distancia:
+                        millor_distancia = dist_act
+                        millor_candidat = c
+
+                if millor_candidat is not None:
+                    equip.append(millor_candidat)
+                    n_assignats.add(millor_candidat)
+                    candidats.remove(millor_candidat)
+
+            if len(equip) == tam:
+                equips.append(equip)
+
+    resta = [n for n in g.nodes if n not in n_assignats]
+    for i in range(0, len(resta), tam):
+        equips.append(resta[i:i + tam])
+
+    return equips
+                
+def result(g: PersonesGraph, particip: list[Participant]) -> list[list[str]]:
+
+    graf = arestes_nodes(g, particip)
+
+    equips_m = equips_creats(graf)
+
+    return equips_m
+
+print(result(G, participants))

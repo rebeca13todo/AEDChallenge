@@ -54,7 +54,7 @@ def distancia(p1:p.Participant, p2:p.Participant) -> float:
     d += weird_difference_01(p1.hackathons_done, p2.hackathons_done, max_hackatons_done_difference) * HACKATONS_COUNT_COEFICIENT
 
     #Preferred team size
-    d += ((p1.preferred_team_size + p2.preferred_team_size) / max(p1.preferred_team_size, p2.preferred_team_size)*2) * TEAM_SIZE_COEFICIENT
+    #d += ((p1.preferred_team_size + p2.preferred_team_size) / max(p1.preferred_team_size, p2.preferred_team_size)*2) * TEAM_SIZE_COEFICIENT
 
     #Friend registration
     d += friends(p1, p2) * FRIENDS_COEFICIENT

@@ -41,9 +41,14 @@ class Participant:
     future_excitement: str
     fun_fact: str
 
+    def __hash__(self):
+        # Usamos el 'id' que es único y hashable por naturaleza
+        return hash(self.id)
 
-
-
+    def __eq__(self, other):
+        if isinstance(other, Participant):
+            return self.id == other.id
+        return False
 
 
 def load_participants(path: str) -> List[Participant]:
