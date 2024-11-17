@@ -11,16 +11,16 @@ Aquesta solució transformarà la manera com les generacions futures d'entusiast
 
 🔗 Repositori del repte: [AED Challenge Repository](https://github.com/data-students/AEDChallenge)
 
-## Resolució del repte
+# Resolució del repte
 
-# Plantejament
+## Plantejament
 A l'hora de plantejar el problema, vam començar amb una pluja d'idees sobre com haruiem de llegir les dades, quines característiques tenir en compte, com repartir el treball... 
 
 A la primera conclusió que varem arribar va ser que la millor manera de poder relacionar a les persones entre sí tenint en compte els seus atributs va ser mitjançant un graf on cada node representesi una persona i cada aresta la relació d'un participant amb l'altre. El pes de cada aresta es calcularia en funció dels atributs coincidents.
 
 Amb això ja podiem posar-nos a treballar.
 
-# Creació del graf
+## Creació del graf
 Crear un graf on cada persona fos un node va ser fàcil al igual que afegir una aresta entre cada participant. El que va requerir una mica més de feina va ser el fet de calcular el pes de cada aresta. Havíem de plantejar-nos què tenir en compte a l'hora de designar una importància a cada atribut i com detectar si aquest era coincident per cada dos participants diferents.
 
 Com tot requeria d'una funció massa llarga vam decidir començar-la en un fitxer diferent al principal. 
@@ -51,8 +51,8 @@ AVAILABILITY_COEFFICIENT = 2
 
 A continuació vam fer la nostra funció principal del fitzer, que iterava amb *d* i retornava el seu valor final. Cal destacar la forma de sumar valors a la variable: multiplicar el valor del coeficient per un decimal de 0 a 1 en base a l'afinitat entre dos participants segons l'atribut que estiguessim comparant en aquella linia.
 
-# Creació dels equips
+## Creació dels equips
 Per a la creació del graf es va emplear un algorisme de *clustering* amb una limitació: el tamany dels equips. Per tal de que cada equip tingués quatre integrants i no més, vam haver de modificar l'algorisme per complir aquests requeriments. 
 
-# Creació de la interfície
+## Creació de la interfície
 Després d'investigar una mica sobre l'eina de Streamlit, vam aconseguir finalitzar el projecte amb un plot senzill en una taula amb una fila per equip.
