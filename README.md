@@ -20,6 +20,8 @@ A la primera conclusió que varem arribar va ser que la millor manera de poder r
 
 Amb això ja podiem posar-nos a treballar.
 
+![Graf de participants](C:/Users/rebec/OneDrive/Escritorio/concept.jpg)
+
 ## Creació del graf
 Crear un graf on cada persona fos un node va ser fàcil al igual que afegir una aresta entre cada participant. El que va requerir una mica més de feina va ser el fet de calcular el pes de cada aresta. Havíem de plantejar-nos què tenir en compte a l'hora de designar una importància a cada atribut i com detectar si aquest era coincident per cada dos participants diferents.
 
