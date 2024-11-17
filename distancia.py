@@ -73,7 +73,7 @@ def friends(p1: p.Participant, p2: p.Participant) -> int:
     return 0
 
 def same_objective(p1: p.Participant, p2:p.Participant) -> int:
-    ...
+    return 0
 
 
 def distancia(p1:p.Participant, p2:p.Participant) -> float:
