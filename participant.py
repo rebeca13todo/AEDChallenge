@@ -7,9 +7,9 @@ from typing import Dict, List, Literal
 
 @dataclass
 class Participant:
-    id: uuid.UUID  # Unique identifier
+    id: uuid.UUID  # Identificador únic
 
-    # Personal data
+    # Dades personals
     name: str
     email: str
     age: int
@@ -18,12 +18,12 @@ class Participant:
     university: str
     dietary_restrictions: Literal["None", "Vegetarian", "Vegan", "Gluten-free", "Other"]
 
-    # Experience and programming skills
+    # Habilitat programant i experiència
     programming_skills: Dict[str, int]
     experience_level: Literal["Beginner", "Intermediate", "Advanced"]
     hackathons_done: int
 
-    # Interests, preferences and constraints
+    # Interessos, preferències...
     interests: List[str]
     preferred_role: Literal[
         "Analysis", "Visualization", "Development", "Design", "Don't know", "Don't care"
@@ -35,14 +35,14 @@ class Participant:
     preferred_team_size: int
     availability: Dict[str, bool]
 
-    # Description of the participant
+    # Descripció del participant
     introduction: str
     technical_project: str
     future_excitement: str
     fun_fact: str
 
     def __hash__(self):
-        # Usamos el 'id' que es único y hashable por naturaleza
+        # Usem el 'id' que és únic
         return hash(self.id)
 
     def __eq__(self, other):
