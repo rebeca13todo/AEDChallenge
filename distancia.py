@@ -61,7 +61,7 @@ def yos_to_int(year_of_study:str) -> int:
 
 
 def exp_to_int(experience:str) -> int:
-    '''Transforma la variable year_of_study a un interger'''
+    '''Transforma la variable experience a un interger'''
 
     match experience:
         case "Beginner": return 0
@@ -102,7 +102,7 @@ def available(dict1: dict[str, bool], dict2: dict[str, bool]) -> float:
         # Retornem si no hi ha res en comú
         return 0.0
 
-    # Calculem nombre de  valors coincidents
+    # Calculem nombre de valors coincidents
     match = sum(1 for key in comu if dict1.get(key) == dict2.get(key))
     
     sim = match / len(comu)
@@ -132,42 +132,40 @@ def distancia(p1:p.Participant, p2:p.Participant) -> float:
 
     d:float = 0
 
-    #Age
+    # Edat
     d += difference_01(p1.age, p2.age, max_age_diference) * AGE_COEFICIENT
 
-    #Year of study
+    # Any dels estudis
     d += abs( yos_to_int(p1.year_of_study) - yos_to_int(p2.year_of_study))/max_year_study_diference * YOS_COEFICIENT
 
-    #University
+    # Universitat
     d += int( p1.university==p2.university ) * UNIVERSITY_COEFICIENT
 
-    #Experience
+    # Experiència
     d += abs( exp_to_int(p1.experience_level) - exp_to_int(p2.experience_level))/2 * EXPERIENCE_COEFICIENT
 
-    #Interests
+    # Interessos
     d += common_elements(p1.interests, p2.interests)/max_common_interests * INTERESTS_COEFICIENT
 
-    #Preferred role
+    # Rol preferit
     d += int( p1.preferred_role != p2.preferred_role ) * DIFERENT_ROLES_COEFICIENT
 
-    #Objective
+    # Objectiu
     d += abs(skill(p1.programming_skills) - skill(p2.programming_skills)) * SAME_OBJECTIVE_COEFICIENT
 
-    #Hackatons done
+    # Hackatons fetes
     d += difference_01(p1.hackathons_done, p2.hackathons_done, max_hackatons_done_difference) * HACKATONS_COUNT_COEFICIENT
 
-    #Friend registration
+    # Amics
     d += friends(p1, p2) * FRIENDS_COEFICIENT
 
-    #Interest in challenges
+    # Interès pels reptes
     d += common_elements(p1.interest_in_challenges, p2.interest_in_challenges)/max_common_interests *  INTERESTS_CHALLENGES_COEFICIENT
 
-    #Preferred languages
+    # Llengües preferides
     d += common_elements(p1.preferred_languages, p2.preferred_languages) * LANGUAGES_COEFICIENT
 
-    #Availability
+    # Disponiblitat
     d += available(p1.availability, p2.availability) * AVAILABILITY_COEFFICIENT
 
     return d
-
-
