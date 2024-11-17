@@ -2,7 +2,8 @@
 import participant as p
 from math import pow, e
 
-#Valores customizables que representan la importancia de cada cosa
+# Valors personalitzables que marquen la importància de cada atribut en una escala
+# de l'1 al 5.
 # ----------------------------------------------------------------#
 AGE_COEFICIENT = 0
 YOS_COEFICIENT = 4
@@ -12,7 +13,6 @@ INTERESTS_COEFICIENT = 2
 DIFERENT_ROLES_COEFICIENT = 3
 SAME_OBJECTIVE_COEFICIENT = 5
 HACKATONS_COUNT_COEFICIENT = 1
-TEAM_SIZE_COEFICIENT = 2
 FRIENDS_COEFICIENT = 5
 INTERESTS_CHALLENGES_COEFICIENT = 4
 LANGUAGES_COEFICIENT = 4
@@ -20,7 +20,7 @@ PROGRAMMING_SKILL_COEFFICIENT = 3
 AVAILABILITY_COEFFICIENT = 2
 # ----------------------------------------------------------------#
 
-#Estos parámetros sirven para la función
+# Paràmetres útils per les funcions
 max_age_diference = 10
 max_year_study_diference = 5
 max_common_interests = 3
@@ -59,6 +59,7 @@ def yos_to_int(year_of_study:str) -> int:
         case "PhD": return 6
         case _: return -1
 
+
 def exp_to_int(experience:str) -> int:
     '''Transforma la variable year_of_study a un interger'''
 
@@ -78,6 +79,7 @@ def friends(p1: p.Participant, p2: p.Participant) -> int:
         return 1
     return 0
 
+
 def skill(skills: dict[str, int]) -> int:
     """
     Calcula el nivell d'experiència d'una persona en diferents llenguatges de programació.
@@ -88,28 +90,39 @@ def skill(skills: dict[str, int]) -> int:
     return total_points
 
 
-
 def available(dict1: dict[str, bool], dict2: dict[str, bool]) -> float:
     """
     Calculem un percentatje en base 0-1 segons el nombre de jornades en la que
     dos participants coincideixen.
     """
 
-    # Asegurarse de que estamos comparando solo las claves que existen en ambos diccionarios
-    common_keys = set(dict1.keys()).intersection(set(dict2.keys()))
+    comu = set(dict1.keys()).intersection(set(dict2.keys()))
 
-    if not common_keys:
-        # Si no hay claves comunes, no se puede calcular la similitud
+    if not comu:
+        # Retornem si no hi ha res en comú
         return 0.0
 
-    # Calcular cuántos valores coinciden en ambas claves comunes
-    matching_count = sum(1 for key in common_keys if dict1.get(key) == dict2.get(key))
+    # Calculem nombre de  valors coincidents
+    match = sum(1 for key in comu if dict1.get(key) == dict2.get(key))
     
-    # Calcular el "porcentaje" de coincidencias dividiendo por el total de claves comunes
-    similarity = matching_count / len(common_keys)
+    sim = match / len(comu)
     
-    return similarity
+    return sim
 
+
+def same_objective(text1: str, text2: str) -> int:
+    """
+    Comprovem si dos participants coincideixen en el seu obkectiu de participació
+    ja sigui per guanyar o per aprendre. 
+    """
+
+    text1_lower = text1.lower()
+    text2_lower = text2.lower()
+    
+    if ("learn" in text1_lower and "learn" in text2_lower) or ("win" in text1_lower and "win" in text2_lower):
+        return 1
+    else:
+        return 0
 
 
 def distancia(p1:p.Participant, p2:p.Participant) -> float:
@@ -143,9 +156,6 @@ def distancia(p1:p.Participant, p2:p.Participant) -> float:
     #Hackatons done
     d += difference_01(p1.hackathons_done, p2.hackathons_done, max_hackatons_done_difference) * HACKATONS_COUNT_COEFICIENT
 
-    #Preferred team size
-    #d += ((p1.preferred_team_size + p2.preferred_team_size) / max(p1.preferred_team_size, p2.preferred_team_size)*2) * TEAM_SIZE_COEFICIENT
-
     #Friend registration
     d += friends(p1, p2) * FRIENDS_COEFICIENT
 
@@ -161,4 +171,3 @@ def distancia(p1:p.Participant, p2:p.Participant) -> float:
     return d
 
 
-# objective, availability
