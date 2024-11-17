@@ -70,41 +70,22 @@ def equips_creats(g: PersonesGraph) -> list[list[Participant]]:
 
     return equips
                 
-
-def result(g: PersonesGraph, particip: list[Participant]) -> list[list[str]]:
-
-    graf = arestes_nodes(g, particip)
-
-    equips_m: list[list[Participant]] = equips_creats(graf)
-
-    equips_m_noms: list[list[str]] = [[equips_m[i][j].name for j in range(len(equips_m[0]))] for i in range(len(equips_m))]
-
-    equip_int = interfaz(equips_m_noms)
-
-    return equip_int
-
-
-
-def interfaz(equipos):
+def interfaz(equipos: list[list[str]]):
     """
     Funció que crea la plataforma streamlit per visualitzar
     els equips creats.
     """
 
-    # Configurar la página de la aplicación
     st.set_page_config(page_title="Equipos para la Competición", page_icon=":trophy:", layout="wide")
 
-    # Título principal de la aplicación
-    st.title("Equipos para la Competición")
-    st.write("Visualización de los equipos formados para la competición:")
+    # Títul de la pàgina
+    st.title("Equips per la Competició")
+    st.write("Equips formats per a la competició mitjançant l'algorisme:")
 
     df = pd.DataFrame(equipos)
 
-    # Mostrar la tabla con Streamlit
-    st.dataframe(df, width=700)  # Ajustar el ancho de la tabla para que sea más compacta
-
-
-    # Estilo adicional con Streamlit
+    # Veiem la taula amb Streamlit
+    st.dataframe(df, width=700) 
     
     st.markdown("""
         <style>
@@ -136,5 +117,31 @@ def interfaz(equipos):
         </style>
         """, unsafe_allow_html=True
     )
-    
+
+
+def result(g: PersonesGraph, particip: list[Participant]) -> list[list[str]] | None:
+    """
+    Funció que crea crida a les funciones per crear un graf entre els participants,
+    els relaciona entre sí en funció dels seus atributs en comú, els agrupa en equips 
+    de quatre i els traça en una interfície de Streamlit
+    """
+
+    # Cridem la funció per montar un graf amb els participants
+    graf = arestes_nodes(g, particip)
+
+    # Cridem la funció per montar els equips
+    equips_m: list[list[Participant]] = equips_creats(graf)
+
+    # Seleccionem els noms dels integrants dels equips
+    equips_m_noms: list[list[str]] = [[equips_m[i][j].name for j in range(len(equips_m[0]))] for i in range(len(equips_m))]
+
+    # Creem una interfície en Streamlit
+    equip_int = interfaz(equips_m_noms)
+
+    if equip_int is None: return print("Els equips encara no han sigut creats!")
+    else:
+        return equip_int
+
+
+# Obentim els resultats 
 result(G, participants)
