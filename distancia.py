@@ -3,6 +3,7 @@ import participant as p
 from math import pow, e
 
 #Valores customizables que representan la importancia de cada cosa
+# ----------------------------------------------------------------#
 AGE_COEFICIENT = 0
 YOS_COEFICIENT = 4
 UNIVERSITY_COEFICIENT = 1
@@ -16,6 +17,8 @@ FRIENDS_COEFICIENT = 5
 INTERESTS_CHALLENGES_COEFICIENT = 4
 LANGUAGES_COEFICIENT = 4
 PROGRAMMING_SKILL_COEFFICIENT = 3
+AVAILABILITY_COEFFICIENT = 2
+# ----------------------------------------------------------------#
 
 #Estos parámetros sirven para la función
 max_age_diference = 10
@@ -24,7 +27,10 @@ max_common_interests = 3
 max_hackatons_done_difference = 10
 
 def difference_01(x:float, y:float, max_referencia:float) -> float:
-    '''Retorna un valor proporcional a la diferència entre x i y entre 0 i 1. A mesura que la diferència es fa gran, tendeix a 1'''
+    """
+    Retorna un valor proporcional a la diferència entre x i y entre 0 i 1. 
+    A mesura que la diferència es fa gran, tendeix a 1
+    """
 
     c = 3
     dif = abs(x-y)
@@ -72,8 +78,38 @@ def friends(p1: p.Participant, p2: p.Participant) -> int:
         return 1
     return 0
 
-def same_objective(p1: p.Participant, p2:p.Participant) -> int:
-    ...
+def skill(skills: dict[str, int]) -> int:
+    """
+    Calcula el nivell d'experiència d'una persona en diferents llenguatges de programació.
+    """
+    total_points = 0
+    for skill, points in skills.items():
+        total_points += points
+    return total_points
+
+
+
+def available(dict1: dict[str, bool], dict2: dict[str, bool]) -> float:
+    """
+    Calculem un percentatje en base 0-1 segons el nombre de jornades en la que
+    dos participants coincideixen.
+    """
+
+    # Asegurarse de que estamos comparando solo las claves que existen en ambos diccionarios
+    common_keys = set(dict1.keys()).intersection(set(dict2.keys()))
+
+    if not common_keys:
+        # Si no hay claves comunes, no se puede calcular la similitud
+        return 0.0
+
+    # Calcular cuántos valores coinciden en ambas claves comunes
+    matching_count = sum(1 for key in common_keys if dict1.get(key) == dict2.get(key))
+    
+    # Calcular el "porcentaje" de coincidencias dividiendo por el total de claves comunes
+    similarity = matching_count / len(common_keys)
+    
+    return similarity
+
 
 
 def distancia(p1:p.Participant, p2:p.Participant) -> float:
@@ -102,7 +138,7 @@ def distancia(p1:p.Participant, p2:p.Participant) -> float:
     d += int( p1.preferred_role != p2.preferred_role ) * DIFERENT_ROLES_COEFICIENT
 
     #Objective
-    d += same_objective(p1, p2) * SAME_OBJECTIVE_COEFICIENT
+    d += abs(skill(p1.programming_skills) - skill(p2.programming_skills)) * SAME_OBJECTIVE_COEFICIENT
 
     #Hackatons done
     d += difference_01(p1.hackathons_done, p2.hackathons_done, max_hackatons_done_difference) * HACKATONS_COUNT_COEFICIENT
@@ -119,7 +155,10 @@ def distancia(p1:p.Participant, p2:p.Participant) -> float:
     #Preferred languages
     d += common_elements(p1.preferred_languages, p2.preferred_languages) * LANGUAGES_COEFICIENT
 
+    #Availability
+    d += available(p1.availability, p2.availability) * AVAILABILITY_COEFFICIENT
+
     return d
 
 
-#programming skills, objective, availability
+# objective, availability
