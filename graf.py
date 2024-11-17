@@ -2,6 +2,7 @@ import networkx as nx
 from typing import TypeAlias
 from distancia import distancia
 from participant import load_participants, Participant
+import streamlit as st
 
 data_path = "data/datathon_participants.json"
 participants = load_participants(data_path)
@@ -28,7 +29,8 @@ def arestes_nodes(g: PersonesGraph, particip: list[Participant]):
 
 def equips_creats(g: PersonesGraph) -> list[list[Participant]]:
     """
-    Funció que crea els equips.
+    Funció que crea els equips mitjançant un algorisme
+    de clustering. 
     """
     tam: int = 4
     equips = []
@@ -67,6 +69,7 @@ def equips_creats(g: PersonesGraph) -> list[list[Participant]]:
 
     return equips
                 
+
 def result(g: PersonesGraph, particip: list[Participant]) -> list[list[str]]:
 
     graf = arestes_nodes(g, particip)
@@ -75,6 +78,47 @@ def result(g: PersonesGraph, particip: list[Participant]) -> list[list[str]]:
 
     equips_m_noms: list[list[str]] = [[equips_m[i][j].name for j in range(len(equips_m[0]))] for i in range(len(equips_m))]
 
-    return equips_m_noms
+    equip_int = interfaz(equips_m_noms)
 
-print(result(G, participants))
+    return equip_int
+
+
+
+def interfaz(equipos):
+    """
+    Funció que crea la plataforma streamlit per visualitzar
+    els equips creats.
+    """
+
+    # Configurar la página de la aplicación
+    st.set_page_config(page_title="Visualización de Equipos", page_icon=":star:", layout="wide")
+
+    # Título principal de la aplicación
+    st.title("Visualización de Equipos")
+    st.write("Aquí puedes ver los diferentes equipos formados para la competición:")
+
+    # Mostrem el nom de cada equip
+    for idx, equipo in enumerate(equipos, start=1):
+        # Crear una columna para cada equipo
+        with st.container():
+            st.subheader(f"Equipo {idx}")
+            st.write(", ".join(equipo))  # Mostrar los nombres de cada equipo
+            st.markdown("---")  # Línea de separación entre equipos
+
+    # Estilo adicional con Streamlit
+    st.markdown("""
+        <style>
+            .css-18e3th9 {
+                background-color: #f0f0f5;
+                border-radius: 10px;
+                padding: 10px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .css-10trblm {
+                color: #444;
+                font-family: 'Arial', sans-serif;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+
+result(G, participants)
