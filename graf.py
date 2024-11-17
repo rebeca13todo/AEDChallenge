@@ -3,6 +3,7 @@ from typing import TypeAlias
 from distancia import distancia
 from participant import load_participants, Participant
 import streamlit as st
+import pandas as pd
 
 data_path = "data/datathon_participants.json"
 participants = load_participants(data_path)
@@ -91,21 +92,20 @@ def interfaz(equipos):
     """
 
     # Configurar la página de la aplicación
-    st.set_page_config(page_title="Visualización de Equipos", page_icon=":star:", layout="wide")
+    st.set_page_config(page_title="Equipos para la Competición", page_icon=":trophy:", layout="wide")
 
     # Título principal de la aplicación
-    st.title("Visualización de Equipos")
-    st.write("Aquí puedes ver los diferentes equipos formados para la competición:")
+    st.title("Equipos para la Competición")
+    st.write("Visualización de los equipos formados para la competición:")
 
-    # Mostrem el nom de cada equip
-    for idx, equipo in enumerate(equipos, start=1):
-        # Crear una columna para cada equipo
-        with st.container():
-            st.subheader(f"Equipo {idx}")
-            st.write(", ".join(equipo))  # Mostrar los nombres de cada equipo
-            st.markdown("---")  # Línea de separación entre equipos
+    df = pd.DataFrame(equipos)
+
+    # Mostrar la tabla con Streamlit
+    st.dataframe(df, width=700)  # Ajustar el ancho de la tabla para que sea más compacta
+
 
     # Estilo adicional con Streamlit
+    
     st.markdown("""
         <style>
             .css-18e3th9 {
@@ -118,7 +118,23 @@ def interfaz(equipos):
                 color: #444;
                 font-family: 'Arial', sans-serif;
             }
+            .css-1d391kg {
+            font-size: 14px;  /* Tamaño más pequeño para la tabla */
+            }
+            .css-1h3bh6l {
+                font-size: 14px;  /* Tamaño más pequeño para el texto */
+            }
+            .stDataFrame {
+                font-size: 14px;  /* Tamaño de la fuente de las celdas */
+            }
+            body {
+                background: url('https://www.w3schools.com/w3images/forest.jpg') no-repeat center center fixed;
+                background-size: cover;
+                height: 100%;
+                margin: 0;
+            }
         </style>
-        """, unsafe_allow_html=True)
-
+        """, unsafe_allow_html=True
+    )
+    
 result(G, participants)
